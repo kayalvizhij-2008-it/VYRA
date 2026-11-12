@@ -54,8 +54,9 @@ def _cors_origins() -> list[str]:
 app.add_middleware(
 	CORSMiddleware,
 	allow_origins=_cors_origins(),
-	# Optional regex for provider previews, e.g. https://vyra-.*\.vercel\.app
-	allow_origin_regex=os.environ.get('VYRA_CORS_ORIGIN_REGEX') or None,
+	# Vercel production/preview origins are allowed by default because the
+	# frontend is deployed there; override with an explicit regex if needed.
+	allow_origin_regex=os.environ.get('VYRA_CORS_ORIGIN_REGEX') or r'https://[a-z0-9-]+\.vercel\.app',
 	allow_credentials=False,
 	allow_methods=['*'],
 	allow_headers=['*'],
