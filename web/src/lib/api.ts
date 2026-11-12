@@ -51,6 +51,7 @@ export interface ProviderStatus {
   label: string
   configured: boolean
   env_keys: string[]
+  require_all_env: boolean
   missing_env: string[]
   models: string[]
   default_model: string

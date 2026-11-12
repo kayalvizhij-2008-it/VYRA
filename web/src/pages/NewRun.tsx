@@ -326,7 +326,7 @@ export default function NewRun() {
                 <p>
                   {selectedReady
                     ? `${selectedProvider.label} is ready. The key stays on the backend and is never sent to this page.`
-                    : `Add ${selectedProvider.missing_env.join(' or ')} to the backend host's environment (never to frontend code), then redeploy or restart the API. Any one provider is enough — Google is optional.`}
+                    : `Add ${selectedProvider.require_all_env ? selectedProvider.missing_env.join(' and ') : `one of ${selectedProvider.missing_env.join(', ')}`} to the backend host's environment (never to frontend code), then redeploy or restart the API. Any one provider is enough — Google is optional.`}
                 </p>
                 <div className="inline-row">
                   <ButtonLink to="/integrations" variant="ghost" icon="arrow">

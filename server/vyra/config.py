@@ -81,6 +81,7 @@ PROVIDERS: list[dict[str, Any]] = [
 		'id': 'google',
 		'label': 'Google Gemini',
 		'env_keys': ['GOOGLE_API_KEY', 'GEMINI_API_KEY'],
+		'require_all_env': False,
 		'models': [os.environ.get('VYRA_GOOGLE_MODEL', 'gemini-2.5-flash')],
 		'default_model': os.environ.get('VYRA_GOOGLE_MODEL', 'gemini-2.5-flash'),
 		'note': 'Billed by Google per token. The model string is editable in Advanced options.',
@@ -142,12 +143,19 @@ RISK_TERMS = [
 
 def provider_status(provider: dict[str, Any]) -> dict[str, Any]:
 	env = provider['env_keys']
-	missing = [name for name in env if not os.environ.get(name)]
+	# Most providers need every listed variable; Google accepts either of its
+	# two conventional key names. `missing` is what the user still needs.
+	require_all = provider.get('require_all_env', True)
+	if require_all:
+		missing = [name for name in env if not os.environ.get(name)]
+	else:
+		missing = [] if any(os.environ.get(name) for name in env) else list(env)
 	return {
 		'id': provider['id'],
 		'label': provider['label'],
 		'configured': not missing,
 		'env_keys': list(env),
+		'require_all_env': require_all,
 		'missing_env': missing,
 		'models': provider['models'],
 		'default_model': provider['default_model'],
