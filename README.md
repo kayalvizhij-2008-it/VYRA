@@ -1,5 +1,9 @@
 # VYRA
 
+**Live:** [https://vyra-five-chi.vercel.app](https://vyra-five-chi.vercel.app) · **API:** [https://vyra-api-wpc0.onrender.com/api/health](https://vyra-api-wpc0.onrender.com/api/health) · **Repo:** [github.com/kayalvizhij-2008-it/VYRA](https://github.com/kayalvizhij-2008-it/VYRA)
+
+> The Render instance is currently the **free 512 MB plan with an ephemeral filesystem**, because the Render account has no payment method. The API, Chromium binary detection, CORS and the frontend connection are live, but production browser runs need the **Standard (2 GB) plan** and a **1 GB disk mounted at `/data`** (`render.yaml`). No provider key is configured on the deployed API, so a run returns a clear `provider_not_configured` error until one is added in Render's environment.
+
 **Autonomous browser intelligence — a premium control surface for the open-source [`browser-use`](https://github.com/browser-use/browser-use) engine.**
 
 VYRA is an independent interface, not a reimplementation. Every run is handed to the real `browser-use` 1.0.2 agent, which drives a real Chrome/Chromium/Edge browser through a persistent Python REPL and raw Chrome DevTools Protocol. There is no Playwright mock, no scripted demo, no fabricated browser view.
@@ -127,7 +131,7 @@ OpenRouter and other OpenAI-compatible gateways use the **OpenAI-compatible endp
 | Render | `VYRA_CORS_ORIGINS` | Comma-separated frontend origins, e.g. `https://vyra.vercel.app` |
 | Render | `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `GOOGLE_API_KEY` / `BROWSER_USE_API_KEY` | At least one provider key |
 
-The backend image builds Chromium from Debian packages and launches it through browser-use/CDP. A Render disk requires a paid instance, and Chromium needs more than the 512 MB free instance: use at least the **Standard (2 GB)** plan. The blueprint in `render.yaml` encodes that configuration. CORS is restricted to the origins listed in `VYRA_CORS_ORIGINS` (plus localhost for development); set `VYRA_CORS_ORIGIN_REGEX` only if preview deployments need access.
+The backend image builds Chromium from Debian packages and launches it through browser-use/CDP. A Render disk requires a paid instance, and Chromium needs more than the 512 MB free instance: use at least the **Standard (2 GB)** plan. The blueprint in `render.yaml` encodes that configuration. CORS is restricted to the origins listed in `VYRA_CORS_ORIGINS` (plus localhost for development); `*.vercel.app` origins are accepted by default for this frontend. The Vercel project also rewrites `/api/*` to the Render origin, so the browser never calls localhost in production.
 
 ---
 
