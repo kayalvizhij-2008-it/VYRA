@@ -1,0 +1,33 @@
+# Render Blueprint for the VYRA API.
+# Apply from the Render dashboard after pushing the repository, or create the
+# service manually with the same settings. A disk requires a paid instance type;
+# Chromium also needs more than the 512 MB free instance.
+services:
+  - type: web
+    name: vyra-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: standard
+    region: oregon
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: VYRA_DATA_DIR
+        value: /data
+      - key: VYRA_CORS_ORIGINS
+        sync: false
+      - key: VYRA_DEFAULT_HEADLESS
+        value: "true"
+      # Add at least one provider key in the Render dashboard. Never commit it.
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: BROWSER_USE_API_KEY
+        sync: false
+    disk:
+      name: vyra-data
+      mountPath: /data
+      sizeGB: 1
